@@ -2,16 +2,20 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import {XIcon,MinusSmIcon,PlusSmIcon} from '@heroicons/react/outline'
 import { useDispatch } from 'react-redux'
-import { removeFromCart } from '../features/slice/cartSlice'
+import { addToCart, decreaseCart, removeFromCart } from '../features/slice/cartSlice'
 const CartItem = ({item}) => {
   const dispatch = useDispatch()
 
   const {id,title,category,image,price} = item
-
+  const increaseItems = () =>{
+    dispatch(addToCart({id}))
+  }
+  const decreaseItems = () =>{
+    dispatch(decreaseCart({id}))
+  }
   const removeItem = () =>{
       dispatch(removeFromCart({id}))
   }
-
   return (
     <div className='flex items-center '>
         <div className='w-full max-h-[150px] flex items-center justify-between py-2 border-b space-y-4'>
@@ -21,11 +25,11 @@ const CartItem = ({item}) => {
             <p className="text-sm">{category}</p>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4 ">
-                <MinusSmIcon className="h-4 shadow-md cursor-pointer"/>
-                <span>1</span>
-                <PlusSmIcon className="h-4 shadow-md cursor-pointer"/>
+                <MinusSmIcon onClick={decreaseItems} className="h-4 shadow-md cursor-pointer"/>
+                <span>{item.quantity}</span>
+                <PlusSmIcon onClick={increaseItems} className="h-4 shadow-md cursor-pointer"/>
               </div>
-              <p className="text-sm">{price}</p>
+              <p className="text-sm">{price*item.quantity}</p>
             </div>
           </div>
           <div onClick={removeItem}>

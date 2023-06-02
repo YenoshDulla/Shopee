@@ -2,11 +2,22 @@ import React, { useContext } from 'react'
 import {ArrowNarrowRightIcon,TrashIcon} from '@heroicons/react/outline'
 import { SidebarContext } from '../contexts/SidebarContext'
 import { useSelector } from 'react-redux'
-import { selectItem } from '../features/slice/cartSlice'
+import { clearCart, getTotal, selectItem } from '../features/slice/cartSlice'
 import CartItem from './CartItem'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+
 const Sidebar = () => {
   const {isOpen,handleClone} = useContext(SidebarContext)
   const items = useSelector(selectItem)
+  const {totalamount} = useSelector(state=>state.cart)
+  const dispatch = useDispatch();
+  const ClearItems = () =>{
+      dispatch(clearCart())
+  }
+  useEffect(()=>{
+    dispatch(getTotal());
+  },[items,dispatch])
   return (
     <div className={`${isOpen ? 'right-0' :'-right-full'}  w-full h-full bg-white fixed top-0  shadow-2xl md:w-[35vw] xl:w-[30vw] transition-all duration-300 z-40 px-4 lg:px-[35px] xl:px-[20px]'`}>
       <div className='flex items-center justify-between py-4 border-b'>
@@ -20,8 +31,8 @@ const Sidebar = () => {
         />
       ))}
       <div className='flex items-center justify-between w-full mt-4'>
-        <h2>Total : </h2>
-        <button><TrashIcon className='h-6'/></button>
+        <h2>Total : {totalamount}</h2>
+        <button onClick={()=>ClearItems()}><TrashIcon className='h-6'/></button>
       </div>
     </div>
   )
