@@ -1,6 +1,6 @@
 
 import {EyeIcon, ShoppingBagIcon} from '@heroicons/react/outline'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import { addToCart } from '../features/slice/cartSlice'
 
@@ -8,10 +8,22 @@ import { addToCart } from '../features/slice/cartSlice'
 const Product = ({product}) => {
 const {id,image,category,title,price} =product
 const dispatch = useDispatch();
-
+const navigation = useNavigate();
 const HandleCart = () =>{
   dispatch(addToCart(product))
-  console.log(product)
+}
+// Detils
+const  _id =title
+const idString = (stringid)=>{
+  return String(stringid).toLowerCase().split(" ").join("");
+};
+const rootId =idString(_id);
+const handleDetail=()=>{
+   navigation(`/product/${rootId}`,{
+    state:{
+      items:product
+    }
+   })
 }
   return (
     <div >
@@ -20,7 +32,7 @@ const HandleCart = () =>{
         <div className='w-full h-full flex justify-center item-center
          '>
           {/* image */}
-          <div className='w-[200px] mx-auto flex justify-center items-center
+          <div onClick={handleDetail} className='w-[200px] mx-auto flex justify-center items-center
            '>
             <img className='max-h-[160px] group-hover:scale-110 trnsition duration-300' src={image} alt="" />
           </div>

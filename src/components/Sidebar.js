@@ -15,11 +15,12 @@ const Sidebar = () => {
   const ClearItems = () =>{
       dispatch(clearCart())
   }
+  
   useEffect(()=>{
     dispatch(getTotal());
   },[items,dispatch])
   return (
-    <div className={`${isOpen ? 'right-0' :'-right-full'}  w-full h-full bg-white fixed top-0  shadow-2xl md:w-[35vw] xl:w-[30vw] transition-all duration-300 z-40 px-4 lg:px-[35px] xl:px-[20px]'`}>
+    <div className={`${isOpen ? 'right-0' :'-right-full'}  w-full h-full bg-white fixed top-0  shadow-2xl md:w-[35vw] xl:w-[30vw] transition-all duration-300 z-40 px-4 lg:px-[35px] xl:px-[20px] relative'`}>
       <div className='flex items-center justify-between py-4 border-b'>
         <h1>Shopping Bag ({items.length})</h1>
         <ArrowNarrowRightIcon onClick={handleClone} className='h-10 cursor-pointer hover:bg-gray-200 rounded-full p-1 transition-all'/>
@@ -34,6 +35,7 @@ const Sidebar = () => {
         <h2>Total : {totalamount}</h2>
         <button onClick={()=>ClearItems()}><TrashIcon className='h-6'/></button>
       </div>
+      <button className='absolute bottom-0 bg-black p-2 text-white font-medium w-full mx-auto hover:bg-gray-800'>Checkout</button>
     </div>
   )
 }
